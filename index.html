@@ -104,6 +104,10 @@
             background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
         }
 
+        .subject-card.science {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+        }
+
         .topic-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -349,6 +353,15 @@
                     <div class="emoji">📚</div>
                     <div>English</div>
                 </button>
+                <button class="subject-card science" onclick="selectSubject('science')">
+                    <div class="emoji">🔬</div>
+                    <div>Science</div>
+                </button>
+            </div>
+            <div style="text-align: center; margin-top: 30px;">
+                <button class="btn btn-secondary" onclick="showWorksheetGenerator()">
+                    📄 Print Worksheets
+                </button>
             </div>
         </div>
 
@@ -403,6 +416,81 @@
             <div id="resultsList" class="results-list"></div>
             <div style="text-align: center; margin-top: 30px;">
                 <button class="btn" onclick="goToWelcome()">Try Another Quiz! 🎯</button>
+            </div>
+        </div>
+
+        <!-- Worksheet Generator Screen -->
+        <div id="worksheetScreen" class="screen">
+            <h2>📄 Print Practice Worksheets</h2>
+            <p style="text-align: center; color: #666; margin-bottom: 20px;">
+                Generate random math problems to practice offline!
+            </p>
+
+            <div class="settings">
+                <label>
+                    Select Topic:
+                    <select id="worksheetTopic">
+                        <option value="addition">Addition</option>
+                        <option value="subtraction">Subtraction</option>
+                        <option value="multiplication">Multiplication</option>
+                        <option value="mixed">Mixed Practice</option>
+                    </select>
+                </label>
+
+                <label>
+                    Difficulty Level:
+                    <select id="worksheetDifficulty">
+                        <option value="easy">★ Easy (Single Digit)</option>
+                        <option value="medium">★★ Medium (Teens & 20s)</option>
+                        <option value="hard">★★★ Hard (2-Digit Numbers)</option>
+                    </select>
+                </label>
+
+                <label>
+                    Number of Problems:
+                    <select id="worksheetCount">
+                        <option value="10">10 Problems</option>
+                        <option value="15">15 Problems</option>
+                        <option value="20" selected>20 Problems</option>
+                        <option value="30">30 Problems</option>
+                    </select>
+                </label>
+            </div>
+
+            <div style="text-align: center; margin: 30px 0;">
+                <button class="btn" onclick="generateWorksheet()">Generate Worksheet 📝</button>
+                <button class="btn back-btn" onclick="goToWelcome()">← Back</button>
+            </div>
+
+            <div id="worksheetContent" style="display: none;">
+                <div style="background: white; padding: 30px; border-radius: 15px; margin: 20px 0;">
+                    <div id="worksheetHeader" style="text-align: center; margin-bottom: 30px;">
+                        <h3>Math Practice Worksheet</h3>
+                        <p>Name: _____________ Date: _____________</p>
+                    </div>
+                    <div id="worksheetProblems" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; font-size: 1.2em;">
+                    </div>
+                </div>
+                <div style="text-align: center; margin-top: 20px;">
+                    <button class="btn" onclick="window.print()">🖨️ Print Worksheet</button>
+                    <button class="btn btn-secondary" onclick="generateWorksheet()">🔄 Generate New</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Science Activities Screen -->
+        <div id="scienceActivitiesScreen" class="screen">
+            <h2>🔬 Science Activities - Do at Home!</h2>
+            <p style="text-align: center; color: #666; margin-bottom: 20px;">
+                Fun experiments you can do by yourself or with family!
+            </p>
+
+            <div id="activitiesList" class="results-list">
+                <!-- Activities will be populated based on topic -->
+            </div>
+
+            <div style="text-align: center; margin-top: 30px;">
+                <button class="btn back-btn" onclick="backToScience()">← Back to Quiz</button>
             </div>
         </div>
     </div>
@@ -1412,6 +1500,136 @@
                         explanation: "Cake and bake rhyme! They both end with 'ake'! 🎂"
                     }
                 ]
+            },
+            science: {
+                matter: [
+                    {
+                        question: "What are the three states of matter?",
+                        options: ["Solid, Liquid, Gas", "Hot, Cold, Warm", "Big, Small, Tiny", "Hard, Soft, Squishy"],
+                        correct: 0,
+                        explanation: "The three states of matter are Solid, Liquid, and Gas! 🧊💧☁️\n\n📖 EXAMPLES:\n• SOLID: Ice cream, rocks, toys - they keep their shape!\n• LIQUID: Water, juice, milk - they flow and take the shape of their container!\n• GAS: Air, steam, bubbles - they spread out to fill any space!\n\n🔬 REAL LIFE: Water can be all three! Ice (solid), water (liquid), and steam (gas)!"
+                    },
+                    {
+                        question: "What happens when you heat ice?",
+                        options: ["It gets harder", "It melts into water", "It turns into steam", "Nothing happens"],
+                        correct: 1,
+                        explanation: "Ice melts into water when heated! 🧊→💧\n\n📖 METHOD 1 - Observation: Leave ice cream out - it melts into liquid!\n\n🌡️ METHOD 2 - Temperature: Heat makes molecules move faster, changing solid to liquid!\n\n🔬 METHOD 3 - Experiment: Put ice in the sun and watch it turn to water!"
+                    },
+                    {
+                        question: "Which of these is a liquid?",
+                        options: ["A rock", "Milk", "A pencil", "Air"],
+                        correct: 1,
+                        explanation: "Milk is a liquid! 🥛\n\n📖 HOW TO KNOW:\n• Liquids pour and take the shape of their container\n• You can drink liquids\n• Liquids can splash and spill\n\n🔬 OTHER LIQUIDS: Water, juice, oil, honey!"
+                    },
+                    {
+                        question: "What is mixing water and sand called?",
+                        options: ["A solution", "A mixture", "A solid", "A liquid"],
+                        correct: 1,
+                        explanation: "Water and sand make a MIXTURE! 🏖️\n\n📖 UNDERSTANDING:\n• A mixture is when you combine things but they don't change\n• You can still see the sand in the water\n• You could separate them again!\n\n🔬 TRY IT: Mix sand and water in a cup - you can see both!"
+                    },
+                    {
+                        question: "What takes the shape of its container?",
+                        options: ["A rock", "A book", "Water", "A toy"],
+                        correct: 2,
+                        explanation: "Liquids like water take the shape of their container! 💧\n\n📖 EXPERIMENT: Pour water into a cup (round shape), then into a box (square shape)!\n\n🔬 WHY: Liquid molecules can move and slide past each other!\n\n🎯 REMEMBER: Solids keep their shape, liquids change shape!"
+                    }
+                ],
+                living_things: [
+                    {
+                        question: "What do all living things need to survive?",
+                        options: ["Toys and games", "Food, water, air", "TVand computers", "Cars and bikes"],
+                        correct: 1,
+                        explanation: "All living things need FOOD, WATER, and AIR! 🌱💧☁️\n\n📖 WHY EACH ONE:\n• FOOD: Gives energy to grow and move\n• WATER: Keeps bodies working properly\n• AIR: We breathe oxygen to live\n\n🔬 EXAMPLES: Plants, animals, and people all need these!"
+                    },
+                    {
+                        question: "What do plants need to make their own food?",
+                        options: ["Darkness and cold", "Sunlight, water, air", "Toys and music", "Dirt only"],
+                        correct: 1,
+                        explanation: "Plants need SUNLIGHT, WATER, and AIR to make food! 🌞💧🌬️\n\n📖 HOW IT WORKS:\n• Sunlight gives energy\n• Water comes from roots\n• Air provides carbon dioxide\n• Leaves make food (photosynthesis)!\n\n🔬 PLANT PART: Leaves are like tiny food factories!"
+                    },
+                    {
+                        question: "What do we call animals that eat only plants?",
+                        options: ["Carnivores", "Herbivores", "Omnivores", "Predators"],
+                        correct: 1,
+                        explanation: "Plant-eating animals are HERBIVORES! 🐰🥕\n\n📖 EXAMPLES:\n• Rabbits eat carrots and lettuce\n• Deer eat grass and leaves\n• Cows eat hay and grass\n\n🔬 WORD BREAKDOWN: 'Herb' means plant, so herbivore = plant eater!\n\n🎯 OPPOSITE: Carnivores eat meat!"
+                    },
+                    {
+                        question: "Which part of a plant takes in water from the soil?",
+                        options: ["Leaves", "Flowers", "Roots", "Stem"],
+                        correct: 2,
+                        explanation: "ROOTS take in water from the soil! 🌱\n\n📖 HOW ROOTS WORK:\n• Grow down into the soil\n• Soak up water like a straw\n• Also take in nutrients (food from soil)\n• Hold the plant in place\n\n🔬 EXPERIMENT: Grow a bean plant and see the roots!"
+                    },
+                    {
+                        question: "What is a baby butterfly called?",
+                        options: ["A puppy", "A caterpillar", "A tadpole", "A chick"],
+                        correct: 1,
+                        explanation: "A baby butterfly is a CATERPILLAR! 🐛→🦋\n\n📖 BUTTERFLY LIFE CYCLE:\n1. Egg (tiny, on a leaf)\n2. Caterpillar (eats lots of leaves!)\n3. Chrysalis (rests and changes)\n4. Butterfly (beautiful and can fly!)\n\n🔬 AMAZING: The caterpillar completely transforms inside the chrysalis!"
+                    },
+                    {
+                        question: "Which of these is NOT a living thing?",
+                        options: ["A tree", "A dog", "A rock", "A flower"],
+                        correct: 2,
+                        explanation: "A ROCK is not a living thing! 🪨\n\n📖 LIVING VS NON-LIVING:\n\nLIVING things:\n• Grow and change\n• Need food and water\n• Can have babies\n• Breathe\n\nNON-LIVING things:\n• Don't grow\n• Don't need food\n• Stay the same\n\n🔬 REMEMBER: If it doesn't grow or eat, it's non-living!"
+                    }
+                ],
+                earth_science: [
+                    {
+                        question: "What causes day and night on Earth?",
+                        options: ["The Moon moving", "Earth spinning (rotating)", "The Sun moving", "Clouds covering the Sun"],
+                        correct: 1,
+                        explanation: "Earth SPINNING (rotating) causes day and night! 🌍\n\n📖 HOW IT WORKS:\n• Earth spins like a top\n• Takes 24 hours for one full spin\n• The side facing the Sun has DAY ☀️\n• The side away from the Sun has NIGHT 🌙\n\n🔬 TRY THIS: Spin a ball with a flashlight - one side is always lit!"
+                    },
+                    {
+                        question: "What is the weather like when it rains?",
+                        options: ["Sunny and hot", "Cloudy and wet", "Snowy and cold", "Windy and dry"],
+                        correct: 1,
+                        explanation: "Rainy weather is CLOUDY and WET! ☁️💧\n\n📖 WHY IT RAINS:\n• Water evaporates (turns to gas) from oceans and lakes\n• Goes up and forms clouds\n• Clouds get heavy with water\n• Rain falls down!\n\n🔬 WATER CYCLE: Rain → puddles → evaporate → clouds → rain again!"
+                    },
+                    {
+                        question: "What are clouds made of?",
+                        options: ["Cotton balls", "Tiny water droplets", "Smoke", "Ice cream"],
+                        correct: 1,
+                        explanation: "Clouds are made of TINY WATER DROPLETS! ☁️💧\n\n📖 HOW CLOUDS FORM:\n• Sun heats water\n• Water evaporates (becomes invisible gas)\n• Goes up high where it's cold\n• Turns into tiny droplets\n• Millions of droplets make a cloud!\n\n🔬 FUN FACT: Clouds look solid but are actually gas with tiny water drops!"
+                    },
+                    {
+                        question: "Which season comes after winter?",
+                        options: ["Fall", "Summer", "Spring", "Winter again"],
+                        correct: 2,
+                        explanation: "SPRING comes after winter! 🌸\n\n📖 THE FOUR SEASONS (in order):\n1. Winter ❄️ (cold, snow)\n2. Spring 🌸 (flowers bloom, warmer)\n3. Summer ☀️ (hot, sunny)\n4. Fall/Autumn 🍂 (leaves change color, cooler)\n\n🔬 WHY SEASONS: Earth tilts as it goes around the Sun!"
+                    },
+                    {
+                        question: "What do we use to measure temperature?",
+                        options: ["A ruler", "A thermometer", "A scale", "A clock"],
+                        correct: 1,
+                        explanation: "We use a THERMOMETER to measure temperature! 🌡️\n\n📖 WHAT IT MEASURES:\n• How hot or cold something is\n• Measured in degrees (°F or °C)\n• Red liquid goes up when hot\n• Red liquid goes down when cold\n\n🔬 EXAMPLES:\n• 32°F = Water freezes\n• 98.6°F = Your body temperature\n• 212°F = Water boils!"
+                    }
+                ],
+                simple_machines: [
+                    {
+                        question: "What simple machine is a seesaw?",
+                        options: ["A wheel", "A lever", "A pulley", "A screw"],
+                        correct: 1,
+                        explanation: "A seesaw is a LEVER! ⚖️\n\n📖 HOW A LEVER WORKS:\n• Has a bar that pivots (moves) on a point\n• Push down on one side\n• The other side goes up!\n• Makes lifting easier\n\n🔬 OTHER LEVERS:\n• Scissors (two levers together!)\n• Door handle\n• Bottle opener\n\n🎯 TRY IT: Use a ruler to lift a book!"
+                    },
+                    {
+                        question: "What simple machine helps you lift a flag?",
+                        options: ["A lever", "A pulley", "A wedge", "An inclined plane"],
+                        correct: 1,
+                        explanation: "A PULLEY helps lift a flag! 🏴\n\n📖 HOW A PULLEY WORKS:\n• Has a wheel with a rope\n• Pull down on one end\n• Object goes up on other end!\n• Changes direction of force\n\n🔬 WHERE YOU SEE PULLEYS:\n• Flag poles\n• Cranes lifting heavy things\n• Window blinds\n• Elevators\n\n🎯 WHY IT HELPS: Pulling down is easier than pulling up!"
+                    },
+                    {
+                        question: "What simple machine is a slide at the playground?",
+                        options: ["A pulley", "A lever", "An inclined plane", "A wheel and axle"],
+                        correct: 2,
+                        explanation: "A slide is an INCLINED PLANE! 🛝\n\n📖 WHAT IS AN INCLINED PLANE:\n• A flat surface that is slanted\n• One end is higher than the other\n• Makes it easier to move things up or down\n\n🔬 OTHER INCLINED PLANES:\n• Ramps (wheelchair ramps)\n• Stairs\n• Roads going up hills\n\n🎯 WHY IT HELPS: Going up a ramp is easier than climbing straight up!"
+                    },
+                    {
+                        question: "What simple machine do wheels on a car represent?",
+                        options: ["Lever", "Pulley", "Wheel and axle", "Wedge"],
+                        correct: 2,
+                        explanation: "Car wheels are WHEEL AND AXLE! 🚗\n\n📖 HOW IT WORKS:\n• A wheel (round part) attached to an axle (rod)\n• The axle turns and makes the wheel spin\n• Helps things roll easily\n\n🔬 WHERE YOU SEE THEM:\n• Bicycle wheels\n• Car wheels\n• Door knobs\n• Rolling chairs\n\n🎯 BENEFIT: Rolling is much easier than dragging!"
+                    }
+                ]
             }
         };
 
@@ -1431,6 +1649,186 @@
                 { id: 'grammar', name: '✏️ Grammar', emoji: '✏️' },
                 { id: 'spelling', name: '🔤 Spelling', emoji: '🔤' },
                 { id: 'phonics', name: '🔊 Phonics', emoji: '🔊' }
+            ],
+            science: [
+                { id: 'matter', name: '🧊 Matter & Materials', emoji: '🧊' },
+                { id: 'living_things', name: '🌱 Living Things', emoji: '🌱' },
+                { id: 'earth_science', name: '🌍 Earth & Weather', emoji: '🌍' },
+                { id: 'simple_machines', name: '⚙️ Simple Machines', emoji: '⚙️' }
+            ]
+        };
+
+        // Science Activities Database
+        const scienceActivities = {
+            matter: [
+                {
+                    title: "Ice to Water Experiment",
+                    materials: "Ice cubes, bowl, sunny spot",
+                    steps: [
+                        "Put ice cubes in a bowl",
+                        "Place bowl in a sunny spot",
+                        "Check every 10 minutes",
+                        "Watch ice turn to water!"
+                    ],
+                    learning: "You'll see SOLID ice melt into LIQUID water. Heat from the sun makes this happen!"
+                },
+                {
+                    title: "Mix and Separate",
+                    materials: "Sand, water, spoon, cup",
+                    steps: [
+                        "Put sand in a cup",
+                        "Add water and stir",
+                        "Let it sit for 5 minutes",
+                        "See sand settle at bottom!"
+                    ],
+                    learning: "This makes a MIXTURE. The sand and water don't combine - you can still see both!"
+                },
+                {
+                    title: "Shape Shifter Water",
+                    materials: "Water, different containers (cup, bowl, plate)",
+                    steps: [
+                        "Pour water in a cup - it's cup-shaped!",
+                        "Pour same water in a bowl - now bowl-shaped!",
+                        "Pour on a plate - it spreads flat!"
+                    ],
+                    learning: "Liquids take the shape of their container. Solids don't!"
+                }
+            ],
+            living_things: [
+                {
+                    title: "Grow a Bean Plant",
+                    materials: "Bean seed, cup, soil, water, sunny window",
+                    steps: [
+                        "Fill cup with soil",
+                        "Plant bean seed 1 inch deep",
+                        "Water it a little bit",
+                        "Put in sunny spot",
+                        "Water every 2-3 days",
+                        "Watch it grow over 2 weeks!"
+                    ],
+                    learning: "You'll see the plant needs water, sunlight, and air to grow. Watch for roots and leaves!"
+                },
+                {
+                    title: "Living vs Non-Living Sort",
+                    materials: "Toys, plants, pictures from magazines, two boxes",
+                    steps: [
+                        "Label one box 'Living' and one 'Non-Living'",
+                        "Find items around your house",
+                        "Ask: Does it grow? Does it need food? Does it breathe?",
+                        "Sort items into correct boxes"
+                    ],
+                    learning: "Living things grow, need food/water, breathe, and can have babies. Non-living things don't!"
+                },
+                {
+                    title: "Bird Watching Log",
+                    materials: "Paper, pencil, window or outside spot",
+                    steps: [
+                        "Sit quietly near a window or outside",
+                        "Watch for birds for 15 minutes",
+                        "Draw the birds you see",
+                        "Count how many birds",
+                        "What are they doing? (eating, flying, singing?)"
+                    ],
+                    learning: "Birds are living things! They look for food, fly, and make sounds to communicate."
+                }
+            ],
+            earth_science: [
+                {
+                    title: "Cloud Observer",
+                    materials: "Paper, crayons, a week of time",
+                    steps: [
+                        "Look at the sky same time each day",
+                        "Draw the clouds you see",
+                        "Write if it's sunny, cloudy, or rainy",
+                        "Do this for 7 days",
+                        "Notice patterns!"
+                    ],
+                    learning: "Weather changes! Clouds bring rain. Clear skies mean sunny weather."
+                },
+                {
+                    title: "Make a Rain Gauge",
+                    materials: "Clear plastic bottle, ruler, tape, marker",
+                    steps: [
+                        "Cut top off plastic bottle",
+                        "Tape ruler to side of bottle",
+                        "Put outside when it rains",
+                        "Measure how much rain collected!",
+                        "Empty and try again next rain"
+                    ],
+                    learning: "This measures rainfall! Scientists use rain gauges to track weather patterns."
+                },
+                {
+                    title: "Day and Night Demonstration",
+                    materials: "Flashlight, ball or globe, dark room",
+                    steps: [
+                        "Ball is Earth, flashlight is Sun",
+                        "Shine flashlight on ball",
+                        "Slowly spin the ball",
+                        "Watch how one side is always lit!",
+                        "The dark side is nighttime!"
+                    ],
+                    learning: "Earth spins! The side facing the sun has day. The other side has night."
+                },
+                {
+                    title: "Season Tracker",
+                    materials: "Paper, crayons, camera (optional)",
+                    steps: [
+                        "Pick a tree you can see from your window",
+                        "Draw or photograph it each month",
+                        "Notice changes in leaves and branches",
+                        "Watch through all four seasons!"
+                    ],
+                    learning: "Trees change with seasons! Leaves grow in spring, are green in summer, change colors in fall, and fall off in winter."
+                }
+            ],
+            simple_machines: [
+                {
+                    title: "Build a Lever",
+                    materials: "Ruler, pencil, small toy",
+                    steps: [
+                        "Place pencil on table",
+                        "Balance ruler on top of pencil",
+                        "Put toy on one end of ruler",
+                        "Push down other end - toy lifts up!",
+                        "Try moving the pencil to different spots"
+                    ],
+                    learning: "This is a LEVER! It helps you lift things easier. Seesaws work the same way!"
+                },
+                {
+                    title: "Ramp (Inclined Plane) Test",
+                    materials: "Books, cardboard, toy car",
+                    steps: [
+                        "Stack 3 books",
+                        "Lean cardboard against books to make a ramp",
+                        "Roll toy car down",
+                        "Try with different heights!",
+                        "Which is faster?"
+                    ],
+                    learning: "A ramp is an INCLINED PLANE! It makes moving things up easier than lifting straight up."
+                },
+                {
+                    title: "Wheel and Axle Discovery",
+                    materials: "Toy car, box, string",
+                    steps: [
+                        "Try pushing a box across the floor - it's hard!",
+                        "Put toy car under box",
+                        "Now push - much easier!",
+                        "Wheels make things roll smoothly"
+                    ],
+                    learning: "WHEELS AND AXLES make moving heavy things easier! That's why we put wheels on everything!"
+                },
+                {
+                    title: "Pulley System",
+                    materials: "String, empty thread spool, stick or coat hanger, small bag with toy",
+                    steps: [
+                        "Thread string through spool",
+                        "Hang spool from stick",
+                        "Tie bag to one end of string",
+                        "Pull other end down - bag goes up!",
+                        "This is how flag poles work!"
+                    ],
+                    learning: "A PULLEY changes the direction of force. Pulling down is easier than pulling up!"
+                }
             ]
         };
 
@@ -1440,7 +1838,13 @@
             showScreen('topicScreen');
 
             const topicTitle = document.getElementById('topicTitle');
-            topicTitle.textContent = subject === 'math' ? '🔢 Choose Your Math Topic' : '📚 Choose Your English Topic';
+            if (subject === 'math') {
+                topicTitle.textContent = '🔢 Choose Your Math Topic';
+            } else if (subject === 'english') {
+                topicTitle.textContent = '📚 Choose Your English Topic';
+            } else if (subject === 'science') {
+                topicTitle.textContent = '🔬 Choose Your Science Topic';
+            }
 
             const topicGrid = document.getElementById('topicGrid');
             topicGrid.innerHTML = '';
@@ -1452,6 +1856,16 @@
                 btn.onclick = () => selectTopic(topic.id);
                 topicGrid.appendChild(btn);
             });
+
+            // Add "Activities" button for science
+            if (subject === 'science') {
+                const activitiesBtn = document.createElement('button');
+                activitiesBtn.className = 'btn btn-secondary';
+                activitiesBtn.innerHTML = '🔬 View Science Activities';
+                activitiesBtn.style.marginTop = '20px';
+                activitiesBtn.onclick = () => showScienceActivities();
+                topicGrid.parentElement.insertBefore(activitiesBtn, topicGrid.nextSibling);
+            }
         }
 
         function selectTopic(topicId) {
@@ -1623,6 +2037,139 @@
                 [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
             }
             return newArray;
+        }
+
+        // Worksheet Generator Functions
+        function showWorksheetGenerator() {
+            showScreen('worksheetScreen');
+            document.getElementById('worksheetContent').style.display = 'none';
+        }
+
+        function generateWorksheet() {
+            const topic = document.getElementById('worksheetTopic').value;
+            const difficulty = document.getElementById('worksheetDifficulty').value;
+            const count = parseInt(document.getElementById('worksheetCount').value);
+
+            const problems = [];
+
+            for (let i = 0; i < count; i++) {
+                let problem;
+                if (topic === 'mixed') {
+                    const mixedTopic = ['addition', 'subtraction', 'multiplication'][Math.floor(Math.random() * 3)];
+                    problem = generateProblem(mixedTopic, difficulty);
+                } else {
+                    problem = generateProblem(topic, difficulty);
+                }
+                problems.push(problem);
+            }
+
+            displayWorksheet(problems);
+        }
+
+        function generateProblem(topic, difficulty) {
+            let num1, num2, operator, answer;
+
+            if (difficulty === 'easy') {
+                num1 = Math.floor(Math.random() * 9) + 1;  // 1-9
+                num2 = Math.floor(Math.random() * 9) + 1;  // 1-9
+            } else if (difficulty === 'medium') {
+                num1 = Math.floor(Math.random() * 20) + 1;  // 1-20
+                num2 = Math.floor(Math.random() * 10) + 1;  // 1-10
+            } else { // hard
+                num1 = Math.floor(Math.random() * 80) + 10;  // 10-89
+                num2 = Math.floor(Math.random() * 80) + 10;  // 10-89
+            }
+
+            if (topic === 'addition') {
+                operator = '+';
+                answer = num1 + num2;
+            } else if (topic === 'subtraction') {
+                // Make sure we don't get negative answers
+                if (num1 < num2) [num1, num2] = [num2, num1];
+                operator = '-';
+                answer = num1 - num2;
+            } else if (topic === 'multiplication') {
+                // Keep multiplication reasonable for 2nd grade
+                num1 = Math.min(num1, 10);
+                num2 = Math.min(num2, 10);
+                operator = '×';
+                answer = num1 * num2;
+            }
+
+            return { num1, num2, operator, answer };
+        }
+
+        function displayWorksheet(problems) {
+            const worksheetProblems = document.getElementById('worksheetProblems');
+            worksheetProblems.innerHTML = '';
+
+            problems.forEach((problem, index) => {
+                const problemDiv = document.createElement('div');
+                problemDiv.style.padding = '15px';
+                problemDiv.style.border = '1px solid #ddd';
+                problemDiv.style.borderRadius = '10px';
+                problemDiv.innerHTML = `
+                    <div style="font-weight: bold; margin-bottom: 10px;">${index + 1}.</div>
+                    <div style="font-size: 1.5em; text-align: center;">
+                        ${problem.num1} ${problem.operator} ${problem.num2} = _____
+                    </div>
+                `;
+                worksheetProblems.appendChild(problemDiv);
+            });
+
+            document.getElementById('worksheetContent').style.display = 'block';
+        }
+
+        // Science Activities Functions
+        function showScienceActivities() {
+            if (!currentTopic) {
+                alert('Please select a science topic first! 🔬');
+                return;
+            }
+
+            const activities = scienceActivities[currentTopic] || [];
+            const activitiesList = document.getElementById('activitiesList');
+            activitiesList.innerHTML = '';
+
+            if (activities.length === 0) {
+                activitiesList.innerHTML = '<p>No activities available for this topic yet.</p>';
+            } else {
+                activities.forEach((activity, index) => {
+                    const activityDiv = document.createElement('div');
+                    activityDiv.className = 'result-item';
+                    activityDiv.style.borderLeftColor = '#43e97b';
+
+                    const stepsHTML = activity.steps.map((step, i) => `<li>${step}</li>`).join('');
+
+                    activityDiv.innerHTML = `
+                        <div class="result-question">
+                            <strong>Activity ${index + 1}: ${activity.title}</strong>
+                        </div>
+                        <div class="result-answer">
+                            <strong>📦 Materials Needed:</strong><br>
+                            ${activity.materials}
+                        </div>
+                        <div class="result-answer">
+                            <strong>📋 Steps:</strong>
+                            <ol style="margin-left: 20px; margin-top: 10px;">
+                                ${stepsHTML}
+                            </ol>
+                        </div>
+                        <div class="result-explanation">
+                            <strong>🎓 What You'll Learn:</strong><br>
+                            ${activity.learning}
+                        </div>
+                    `;
+
+                    activitiesList.appendChild(activityDiv);
+                });
+            }
+
+            showScreen('scienceActivitiesScreen');
+        }
+
+        function backToScience() {
+            selectSubject('science');
         }
     </script>
 </body>
