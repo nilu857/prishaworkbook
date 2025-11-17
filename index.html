@@ -1,0 +1,1194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fun Learning Adventure! 🎓</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Comic Sans MS', 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 30px;
+            padding: 40px;
+            max-width: 900px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        h1 {
+            color: #667eea;
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            animation: bounce 2s infinite;
+        }
+
+        h2 {
+            color: #764ba2;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+        }
+
+        .screen {
+            display: none;
+        }
+
+        .screen.active {
+            display: block;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .subject-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .subject-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 20px;
+            border-radius: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1.3em;
+            font-weight: bold;
+            border: none;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .subject-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            animation: pulse 0.5s ease;
+        }
+
+        .subject-card.math {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .subject-card.english {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .topic-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .topic-btn {
+            background: #667eea;
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            border: none;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .topic-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .settings {
+            background: #f7f7f7;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+        }
+
+        .settings label {
+            display: block;
+            margin: 15px 0;
+            font-size: 1.1em;
+            color: #333;
+            font-weight: bold;
+        }
+
+        .settings input, .settings select {
+            width: 100%;
+            padding: 12px;
+            border-radius: 10px;
+            border: 2px solid #667eea;
+            font-size: 1em;
+            margin-top: 5px;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 40px;
+            border-radius: 25px;
+            border: none;
+            cursor: pointer;
+            font-size: 1.2em;
+            font-weight: bold;
+            margin: 10px;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .quiz-container {
+            padding: 20px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 30px;
+            background: #e0e0e0;
+            border-radius: 15px;
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .question-card {
+            background: #f7f7f7;
+            padding: 30px;
+            border-radius: 20px;
+            margin: 20px 0;
+            font-size: 1.3em;
+            line-height: 1.6;
+        }
+
+        .question-text {
+            color: #333;
+            margin-bottom: 25px;
+            font-weight: bold;
+        }
+
+        .options {
+            display: grid;
+            gap: 15px;
+        }
+
+        .option-btn {
+            background: white;
+            border: 3px solid #667eea;
+            padding: 20px;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 1.1em;
+            text-align: left;
+            transition: all 0.3s ease;
+            color: #333;
+        }
+
+        .option-btn:hover {
+            background: #667eea;
+            color: white;
+            transform: translateX(5px);
+        }
+
+        .option-btn.selected {
+            background: #667eea;
+            color: white;
+        }
+
+        .option-btn.correct {
+            background: #4caf50;
+            border-color: #4caf50;
+            color: white;
+        }
+
+        .option-btn.incorrect {
+            background: #f44336;
+            border-color: #f44336;
+            color: white;
+        }
+
+        .results-container {
+            text-align: center;
+        }
+
+        .score-display {
+            font-size: 3em;
+            color: #667eea;
+            margin: 30px 0;
+            animation: pulse 2s infinite;
+        }
+
+        .results-list {
+            text-align: left;
+            margin: 30px 0;
+        }
+
+        .result-item {
+            background: #f7f7f7;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 15px 0;
+            border-left: 5px solid #667eea;
+        }
+
+        .result-item.correct {
+            border-left-color: #4caf50;
+        }
+
+        .result-item.incorrect {
+            border-left-color: #f44336;
+        }
+
+        .result-question {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .result-answer {
+            color: #666;
+            margin: 5px 0;
+        }
+
+        .result-explanation {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 10px;
+            color: #333;
+            font-style: italic;
+        }
+
+        .emoji {
+            font-size: 2em;
+            margin: 0 5px;
+        }
+
+        .back-btn {
+            background: linear-gradient(135deg, #a8a8a8 0%, #6c6c6c 100%);
+            margin-top: 20px;
+        }
+
+        .timer {
+            text-align: center;
+            font-size: 1.5em;
+            color: #667eea;
+            margin: 20px 0;
+            font-weight: bold;
+        }
+
+        .celebration {
+            text-align: center;
+            font-size: 4em;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Welcome Screen -->
+        <div id="welcomeScreen" class="screen active">
+            <h1>🌟 Welcome to Your Learning Adventure! 🌟</h1>
+            <p style="text-align: center; font-size: 1.3em; color: #666; margin-bottom: 30px;">
+                Choose a subject to start your fun learning journey!
+            </p>
+            <div class="subject-grid">
+                <button class="subject-card math" onclick="selectSubject('math')">
+                    <div class="emoji">🔢</div>
+                    <div>Math</div>
+                </button>
+                <button class="subject-card english" onclick="selectSubject('english')">
+                    <div class="emoji">📚</div>
+                    <div>English</div>
+                </button>
+            </div>
+        </div>
+
+        <!-- Topic Selection Screen -->
+        <div id="topicScreen" class="screen">
+            <h2 id="topicTitle">Choose Your Topic</h2>
+            <div id="topicGrid" class="topic-grid"></div>
+
+            <div class="settings">
+                <label>
+                    Number of Questions:
+                    <select id="numQuestions">
+                        <option value="5">5 Questions</option>
+                        <option value="10" selected>10 Questions</option>
+                        <option value="15">15 Questions</option>
+                        <option value="20">20 Questions</option>
+                    </select>
+                </label>
+            </div>
+
+            <div style="text-align: center; margin-top: 30px;">
+                <button class="btn" onclick="startQuiz()">Start Quiz! 🚀</button>
+                <button class="btn back-btn" onclick="goToWelcome()">← Back</button>
+            </div>
+        </div>
+
+        <!-- Quiz Screen -->
+        <div id="quizScreen" class="screen">
+            <div class="progress-bar">
+                <div id="progressFill" class="progress-fill">Question 1 of 10</div>
+            </div>
+
+            <div class="quiz-container">
+                <div class="question-card">
+                    <div id="questionText" class="question-text"></div>
+                    <div id="optionsContainer" class="options"></div>
+                </div>
+
+                <div style="text-align: center; margin-top: 30px;">
+                    <button class="btn" id="nextBtn" onclick="nextQuestion()" style="display: none;">
+                        Next Question →
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results Screen -->
+        <div id="resultsScreen" class="screen">
+            <h2>🎉 Quiz Complete! 🎉</h2>
+            <div id="celebration" class="celebration"></div>
+            <div id="scoreDisplay" class="score-display"></div>
+            <div id="resultsList" class="results-list"></div>
+            <div style="text-align: center; margin-top: 30px;">
+                <button class="btn" onclick="goToWelcome()">Try Another Quiz! 🎯</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Application State
+        let currentSubject = '';
+        let currentTopic = '';
+        let currentQuestions = [];
+        let currentQuestionIndex = 0;
+        let userAnswers = [];
+        let selectedAnswer = null;
+
+        // Question Banks
+        const questionBank = {
+            math: {
+                addition: [
+                    {
+                        question: "What is 5 + 3?",
+                        options: ["6", "7", "8", "9"],
+                        correct: 2,
+                        explanation: "When we add 5 and 3, we count up from 5: 6, 7, 8. So 5 + 3 = 8! 🎉"
+                    },
+                    {
+                        question: "If you have 7 apples and get 4 more, how many do you have?",
+                        options: ["10", "11", "12", "13"],
+                        correct: 1,
+                        explanation: "Start with 7 apples, then add 4 more: 7 + 4 = 11 apples! 🍎"
+                    },
+                    {
+                        question: "What is 12 + 6?",
+                        options: ["16", "17", "18", "19"],
+                        correct: 2,
+                        explanation: "12 + 6 = 18. We can think of it as 12 + 6 = 10 + 2 + 6 = 10 + 8 = 18!"
+                    },
+                    {
+                        question: "What is 9 + 9?",
+                        options: ["16", "17", "18", "19"],
+                        correct: 2,
+                        explanation: "9 + 9 = 18. When we add the same numbers, we're doubling! 9 doubled is 18! 👏"
+                    },
+                    {
+                        question: "What is 8 + 7?",
+                        options: ["13", "14", "15", "16"],
+                        correct: 2,
+                        explanation: "8 + 7 = 15. We can make it easier: 8 + 2 = 10, then 10 + 5 = 15! ✨"
+                    },
+                    {
+                        question: "What is 15 + 5?",
+                        options: ["18", "19", "20", "21"],
+                        correct: 2,
+                        explanation: "15 + 5 = 20. Adding 5 to 15 gives us the nice round number 20! 🌟"
+                    },
+                    {
+                        question: "If you have 3 toy cars and your friend gives you 6 more, how many do you have?",
+                        options: ["7", "8", "9", "10"],
+                        correct: 2,
+                        explanation: "3 cars + 6 cars = 9 toy cars total! Vroom vroom! 🚗"
+                    },
+                    {
+                        question: "What is 11 + 8?",
+                        options: ["17", "18", "19", "20"],
+                        correct: 2,
+                        explanation: "11 + 8 = 19. Think: 11 + 9 = 20, so 11 + 8 is one less, which is 19! 🎯"
+                    },
+                    {
+                        question: "What is 6 + 6?",
+                        options: ["10", "11", "12", "13"],
+                        correct: 2,
+                        explanation: "6 + 6 = 12. This is called a double! 6 doubled equals 12! 🎈"
+                    },
+                    {
+                        question: "What is 14 + 3?",
+                        options: ["15", "16", "17", "18"],
+                        correct: 2,
+                        explanation: "14 + 3 = 17. Count up from 14: fifteen, sixteen, seventeen! 🎊"
+                    },
+                    {
+                        question: "What is 10 + 10?",
+                        options: ["15", "18", "20", "22"],
+                        correct: 2,
+                        explanation: "10 + 10 = 20. Two groups of ten make twenty! 💯"
+                    },
+                    {
+                        question: "What is 7 + 8?",
+                        options: ["13", "14", "15", "16"],
+                        correct: 2,
+                        explanation: "7 + 8 = 15. We can use 7 + 7 = 14, then add 1 more to get 15! 🌈"
+                    }
+                ],
+                subtraction: [
+                    {
+                        question: "What is 10 - 4?",
+                        options: ["4", "5", "6", "7"],
+                        correct: 2,
+                        explanation: "Start at 10 and count back 4: 9, 8, 7, 6. So 10 - 4 = 6! 👍"
+                    },
+                    {
+                        question: "If you have 8 cookies and eat 3, how many are left?",
+                        options: ["4", "5", "6", "7"],
+                        correct: 1,
+                        explanation: "8 cookies - 3 cookies = 5 cookies left! Yummy! 🍪"
+                    },
+                    {
+                        question: "What is 15 - 7?",
+                        options: ["6", "7", "8", "9"],
+                        correct: 2,
+                        explanation: "15 - 7 = 8. We can think: 15 - 5 = 10, then 10 - 2 = 8! 🎯"
+                    },
+                    {
+                        question: "What is 12 - 5?",
+                        options: ["5", "6", "7", "8"],
+                        correct: 2,
+                        explanation: "12 - 5 = 7. Count back from 12 five times to get 7! 🌟"
+                    },
+                    {
+                        question: "What is 9 - 3?",
+                        options: ["4", "5", "6", "7"],
+                        correct: 2,
+                        explanation: "9 - 3 = 6. Take away 3 from 9 and you have 6 left! ✨"
+                    },
+                    {
+                        question: "If you have 20 stickers and give away 8, how many do you have left?",
+                        options: ["10", "11", "12", "13"],
+                        correct: 2,
+                        explanation: "20 - 8 = 12 stickers. You still have 12 stickers to use! 🌈"
+                    },
+                    {
+                        question: "What is 14 - 6?",
+                        options: ["6", "7", "8", "9"],
+                        correct: 2,
+                        explanation: "14 - 6 = 8. Think of 14 as 10 + 4, then take away 6! 🎈"
+                    },
+                    {
+                        question: "What is 11 - 4?",
+                        options: ["5", "6", "7", "8"],
+                        correct: 2,
+                        explanation: "11 - 4 = 7. Count back from 11: 10, 9, 8, 7! 👏"
+                    },
+                    {
+                        question: "What is 16 - 9?",
+                        options: ["5", "6", "7", "8"],
+                        correct: 2,
+                        explanation: "16 - 9 = 7. We can think: 16 - 6 = 10, then 10 - 3 = 7! 💡"
+                    },
+                    {
+                        question: "What is 13 - 8?",
+                        options: ["3", "4", "5", "6"],
+                        correct: 2,
+                        explanation: "13 - 8 = 5. Count back from 13 eight times to get 5! 🎊"
+                    }
+                ],
+                multiplication: [
+                    {
+                        question: "What is 2 × 3?",
+                        options: ["4", "5", "6", "7"],
+                        correct: 2,
+                        explanation: "2 × 3 means 2 groups of 3, or 3 + 3 = 6! 🎯"
+                    },
+                    {
+                        question: "What is 5 × 2?",
+                        options: ["8", "9", "10", "11"],
+                        correct: 2,
+                        explanation: "5 × 2 = 10. This is 5 + 5, or two groups of 5! 🌟"
+                    },
+                    {
+                        question: "If you have 3 bags with 4 candies each, how many candies total?",
+                        options: ["10", "11", "12", "13"],
+                        correct: 2,
+                        explanation: "3 × 4 = 12 candies! That's 4 + 4 + 4 = 12! 🍬"
+                    },
+                    {
+                        question: "What is 2 × 5?",
+                        options: ["8", "9", "10", "11"],
+                        correct: 2,
+                        explanation: "2 × 5 = 10. Two groups of 5 equals 10! ✨"
+                    },
+                    {
+                        question: "What is 3 × 3?",
+                        options: ["6", "7", "8", "9"],
+                        correct: 3,
+                        explanation: "3 × 3 = 9. That's 3 + 3 + 3 = 9! Three groups of three! 🎈"
+                    },
+                    {
+                        question: "What is 4 × 2?",
+                        options: ["6", "7", "8", "9"],
+                        correct: 2,
+                        explanation: "4 × 2 = 8. Four groups of 2, or 2 + 2 + 2 + 2 = 8! 👏"
+                    },
+                    {
+                        question: "What is 2 × 2?",
+                        options: ["2", "3", "4", "5"],
+                        correct: 2,
+                        explanation: "2 × 2 = 4. Two groups of 2 equals 4! 💯"
+                    },
+                    {
+                        question: "What is 5 × 3?",
+                        options: ["12", "13", "14", "15"],
+                        correct: 3,
+                        explanation: "5 × 3 = 15. That's 5 + 5 + 5 = 15! 🌈"
+                    }
+                ],
+                shapes: [
+                    {
+                        question: "How many sides does a triangle have?",
+                        options: ["2", "3", "4", "5"],
+                        correct: 1,
+                        explanation: "A triangle has 3 sides! 'Tri' means three! 🔺"
+                    },
+                    {
+                        question: "How many sides does a square have?",
+                        options: ["2", "3", "4", "5"],
+                        correct: 2,
+                        explanation: "A square has 4 equal sides! All sides are the same length! ⬛"
+                    },
+                    {
+                        question: "Which shape is round with no corners?",
+                        options: ["Square", "Triangle", "Circle", "Rectangle"],
+                        correct: 2,
+                        explanation: "A circle is perfectly round with no corners or edges! ⭕"
+                    },
+                    {
+                        question: "How many corners does a rectangle have?",
+                        options: ["2", "3", "4", "5"],
+                        correct: 2,
+                        explanation: "A rectangle has 4 corners, just like a square! 📐"
+                    },
+                    {
+                        question: "What shape is a door usually?",
+                        options: ["Circle", "Triangle", "Rectangle", "Star"],
+                        correct: 2,
+                        explanation: "Most doors are rectangles - tall and have 4 sides! 🚪"
+                    },
+                    {
+                        question: "How many sides does a pentagon have?",
+                        options: ["4", "5", "6", "7"],
+                        correct: 1,
+                        explanation: "A pentagon has 5 sides! 'Penta' means five! ⬟"
+                    },
+                    {
+                        question: "Which shape has 6 sides?",
+                        options: ["Pentagon", "Hexagon", "Square", "Triangle"],
+                        correct: 1,
+                        explanation: "A hexagon has 6 sides! Like a honeycomb! 🐝"
+                    },
+                    {
+                        question: "What shape is a pizza usually?",
+                        options: ["Square", "Triangle", "Circle", "Rectangle"],
+                        correct: 2,
+                        explanation: "Most pizzas are circles - round and delicious! 🍕"
+                    }
+                ],
+                time: [
+                    {
+                        question: "How many minutes are in one hour?",
+                        options: ["30", "45", "60", "90"],
+                        correct: 2,
+                        explanation: "There are 60 minutes in 1 hour! ⏰"
+                    },
+                    {
+                        question: "How many hours are in one day?",
+                        options: ["12", "20", "24", "30"],
+                        correct: 2,
+                        explanation: "One day has 24 hours - 12 hours of daytime and 12 hours of nighttime! 🌞🌙"
+                    },
+                    {
+                        question: "What time is it when the little hand is on 3 and the big hand is on 12?",
+                        options: ["12:00", "2:00", "3:00", "4:00"],
+                        correct: 2,
+                        explanation: "When the big hand is on 12 and little hand is on 3, it's 3 o'clock! ⏰"
+                    },
+                    {
+                        question: "How many days are in one week?",
+                        options: ["5", "6", "7", "8"],
+                        correct: 2,
+                        explanation: "One week has 7 days! Monday through Sunday! 📅"
+                    },
+                    {
+                        question: "What comes after Wednesday?",
+                        options: ["Tuesday", "Thursday", "Friday", "Saturday"],
+                        correct: 1,
+                        explanation: "Thursday comes after Wednesday! Then it's almost the weekend! 🎉"
+                    },
+                    {
+                        question: "How many seconds are in one minute?",
+                        options: ["30", "45", "60", "100"],
+                        correct: 2,
+                        explanation: "There are 60 seconds in one minute! Count to 60! ⏱️"
+                    },
+                    {
+                        question: "Which hand on a clock moves faster?",
+                        options: ["Hour hand", "Minute hand", "Both same", "Neither moves"],
+                        correct: 1,
+                        explanation: "The minute hand moves faster! It goes all the way around in one hour! 🕐"
+                    }
+                ],
+                measurement: [
+                    {
+                        question: "Which is longer: a ruler or a pencil?",
+                        options: ["Ruler", "Pencil", "Same", "Can't tell"],
+                        correct: 0,
+                        explanation: "A ruler is usually longer than a pencil! We use rulers to measure! 📏"
+                    },
+                    {
+                        question: "How many inches are in one foot?",
+                        options: ["10", "12", "15", "20"],
+                        correct: 1,
+                        explanation: "There are 12 inches in 1 foot! Your foot is about 12 inches long! 👣"
+                    },
+                    {
+                        question: "Which is heavier: a feather or a rock?",
+                        options: ["Feather", "Rock", "Same", "Can't tell"],
+                        correct: 1,
+                        explanation: "A rock is much heavier than a feather! Rocks sink, feathers float! 🪶🪨"
+                    },
+                    {
+                        question: "Which holds more water: a cup or a spoon?",
+                        options: ["Cup", "Spoon", "Same", "Can't tell"],
+                        correct: 0,
+                        explanation: "A cup holds much more water than a spoon! 🥤"
+                    },
+                    {
+                        question: "What do we use to measure how long something is?",
+                        options: ["Clock", "Ruler", "Scale", "Thermometer"],
+                        correct: 1,
+                        explanation: "We use a ruler or tape measure to measure length! 📏"
+                    },
+                    {
+                        question: "What do we use to measure how heavy something is?",
+                        options: ["Clock", "Ruler", "Scale", "Thermometer"],
+                        correct: 2,
+                        explanation: "We use a scale to measure weight! Step on one to see how much you weigh! ⚖️"
+                    }
+                ]
+            },
+            english: {
+                reading: [
+                    {
+                        question: "Read: 'The cat sat on the mat.' Where did the cat sit?",
+                        options: ["On the hat", "On the mat", "On the bat", "On the rat"],
+                        correct: 1,
+                        explanation: "The story says 'The cat sat on the mat.' The cat sat on the mat! 🐱"
+                    },
+                    {
+                        question: "Read: 'Max has a red ball. He likes to play with it.' What color is Max's ball?",
+                        options: ["Blue", "Red", "Green", "Yellow"],
+                        correct: 1,
+                        explanation: "The story tells us Max has a RED ball! 🔴⚽"
+                    },
+                    {
+                        question: "Read: 'The sun is bright. It shines in the sky.' What shines in the sky?",
+                        options: ["The moon", "The sun", "A star", "A bird"],
+                        correct: 1,
+                        explanation: "The story says 'The sun... shines in the sky.' The sun shines! ☀️"
+                    },
+                    {
+                        question: "Read: 'Sara went to the park. She played on the swings.' Where did Sara go?",
+                        options: ["The school", "The store", "The park", "The pool"],
+                        correct: 2,
+                        explanation: "Sara went to the park! She had fun on the swings! 🛝"
+                    },
+                    {
+                        question: "Read: 'The dog runs fast. He chases the ball.' What does the dog chase?",
+                        options: ["A cat", "A ball", "A stick", "A bird"],
+                        correct: 1,
+                        explanation: "The dog chases the ball! Dogs love to play fetch! 🐕⚾"
+                    },
+                    {
+                        question: "Read: 'Mom baked cookies. They smell good!' What did Mom bake?",
+                        options: ["Cake", "Bread", "Cookies", "Pizza"],
+                        correct: 2,
+                        explanation: "Mom baked delicious cookies! Yum! 🍪"
+                    },
+                    {
+                        question: "Read: 'It is raining. I need my umbrella.' What's the weather like?",
+                        options: ["Sunny", "Snowy", "Rainy", "Windy"],
+                        correct: 2,
+                        explanation: "It's raining! That's why we need an umbrella! ☔"
+                    },
+                    {
+                        question: "Read: 'The bird sings in the tree. It has blue feathers.' What color are the bird's feathers?",
+                        options: ["Red", "Blue", "Green", "Yellow"],
+                        correct: 1,
+                        explanation: "The bird has beautiful BLUE feathers! 🐦"
+                    }
+                ],
+                vocabulary: [
+                    {
+                        question: "What is the opposite of 'hot'?",
+                        options: ["Warm", "Cold", "Cool", "Freezing"],
+                        correct: 1,
+                        explanation: "The opposite of hot is cold! Hot and cold are opposites! 🔥❄️"
+                    },
+                    {
+                        question: "What is the opposite of 'big'?",
+                        options: ["Large", "Huge", "Small", "Tiny"],
+                        correct: 2,
+                        explanation: "The opposite of big is small! Big and small are opposites! 🐘🐭"
+                    },
+                    {
+                        question: "Which word means 'happy'?",
+                        options: ["Sad", "Angry", "Glad", "Tired"],
+                        correct: 2,
+                        explanation: "Glad means the same as happy! Both mean feeling good! 😊"
+                    },
+                    {
+                        question: "What is the opposite of 'up'?",
+                        options: ["Down", "Left", "Right", "Side"],
+                        correct: 0,
+                        explanation: "The opposite of up is down! ⬆️⬇️"
+                    },
+                    {
+                        question: "Which word means 'begin'?",
+                        options: ["End", "Stop", "Start", "Finish"],
+                        correct: 2,
+                        explanation: "Start means the same as begin! Let's start learning! 🎯"
+                    },
+                    {
+                        question: "What is the opposite of 'day'?",
+                        options: ["Night", "Evening", "Morning", "Afternoon"],
+                        correct: 0,
+                        explanation: "The opposite of day is night! 🌞🌙"
+                    },
+                    {
+                        question: "Which word means 'fast'?",
+                        options: ["Slow", "Quick", "Lazy", "Tired"],
+                        correct: 1,
+                        explanation: "Quick means the same as fast! Quick and fast both mean speedy! 🏃"
+                    },
+                    {
+                        question: "What is the opposite of 'old'?",
+                        options: ["New", "Young", "Fresh", "Ancient"],
+                        correct: 1,
+                        explanation: "The opposite of old is young! 👶👴"
+                    }
+                ],
+                grammar: [
+                    {
+                        question: "Which sentence is correct?",
+                        options: ["I am happy.", "I is happy.", "I are happy.", "I be happy."],
+                        correct: 0,
+                        explanation: "We say 'I am happy' - 'am' goes with 'I'! 😊"
+                    },
+                    {
+                        question: "Which word is a noun (a thing)?",
+                        options: ["Run", "Jump", "Dog", "Happy"],
+                        correct: 2,
+                        explanation: "Dog is a noun - it's a thing (an animal)! Run and jump are actions! 🐕"
+                    },
+                    {
+                        question: "Which sentence is correct?",
+                        options: ["She go to school.", "She goes to school.", "She going to school.", "She goed to school."],
+                        correct: 1,
+                        explanation: "We say 'She goes to school' - we add 's' to 'go' with 'she'! 🏫"
+                    },
+                    {
+                        question: "Which word describes something (is an adjective)?",
+                        options: ["Cat", "Run", "Blue", "Quickly"],
+                        correct: 2,
+                        explanation: "Blue is an adjective - it describes color! Like 'blue sky'! 💙"
+                    },
+                    {
+                        question: "Which sentence is correct?",
+                        options: ["The cats is playing.", "The cats are playing.", "The cats am playing.", "The cats be playing."],
+                        correct: 1,
+                        explanation: "We say 'The cats are playing' - 'are' goes with more than one cat! 🐱🐱"
+                    },
+                    {
+                        question: "Which is the correct plural of 'book'?",
+                        options: ["Books", "Bookes", "Bookies", "Book"],
+                        correct: 0,
+                        explanation: "The plural of book is books! We add 's' for more than one! 📚"
+                    },
+                    {
+                        question: "Which sentence uses a verb (action word)?",
+                        options: ["The big tree", "Jump high", "A red ball", "My friend"],
+                        correct: 1,
+                        explanation: "'Jump' is a verb - it's an action! Jumping is something you do! 🦘"
+                    }
+                ],
+                spelling: [
+                    {
+                        question: "Which word is spelled correctly?",
+                        options: ["kat", "catt", "cat", "katt"],
+                        correct: 2,
+                        explanation: "CAT is spelled c-a-t! 🐱"
+                    },
+                    {
+                        question: "Which word is spelled correctly?",
+                        options: ["dog", "dawg", "doog", "dogg"],
+                        correct: 0,
+                        explanation: "DOG is spelled d-o-g! 🐕"
+                    },
+                    {
+                        question: "Which word is spelled correctly?",
+                        options: ["sune", "sun", "sunn", "son"],
+                        correct: 1,
+                        explanation: "SUN is spelled s-u-n! The sun shines bright! ☀️"
+                    },
+                    {
+                        question: "Which word is spelled correctly?",
+                        options: ["ball", "bal", "bawl", "baul"],
+                        correct: 0,
+                        explanation: "BALL is spelled b-a-l-l with two l's! ⚽"
+                    },
+                    {
+                        question: "Which word is spelled correctly?",
+                        options: ["tre", "tree", "trea", "treee"],
+                        correct: 1,
+                        explanation: "TREE is spelled t-r-e-e! Trees are tall! 🌳"
+                    },
+                    {
+                        question: "Which word is spelled correctly?",
+                        options: ["hous", "howse", "house", "hoose"],
+                        correct: 2,
+                        explanation: "HOUSE is spelled h-o-u-s-e! 🏠"
+                    },
+                    {
+                        question: "Which word is spelled correctly?",
+                        options: ["book", "bok", "buk", "booke"],
+                        correct: 0,
+                        explanation: "BOOK is spelled b-o-o-k! Books are fun to read! 📖"
+                    },
+                    {
+                        question: "Which word is spelled correctly?",
+                        options: ["blue", "blu", "bloo", "blew"],
+                        correct: 0,
+                        explanation: "BLUE (the color) is spelled b-l-u-e! 💙"
+                    }
+                ],
+                phonics: [
+                    {
+                        question: "What sound does 'sh' make in the word 'shop'?",
+                        options: ["s-h (two sounds)", "shh (one sound)", "ch", "th"],
+                        correct: 1,
+                        explanation: "'sh' makes one sound: shhhh! Like in shop, ship, and shoe! 👟"
+                    },
+                    {
+                        question: "Which word rhymes with 'cat'?",
+                        options: ["Dog", "Hat", "Cup", "Book"],
+                        correct: 1,
+                        explanation: "Cat and hat rhyme! They both end with 'at'! 🎩"
+                    },
+                    {
+                        question: "What sound does 'ch' make in the word 'chip'?",
+                        options: ["k", "s", "ch (like choo-choo)", "sh"],
+                        correct: 2,
+                        explanation: "'ch' makes the sound like in choo-choo train! 🚂"
+                    },
+                    {
+                        question: "Which word rhymes with 'dog'?",
+                        options: ["Cat", "Frog", "Bird", "Fish"],
+                        correct: 1,
+                        explanation: "Dog and frog rhyme! They both end with 'og'! 🐸"
+                    },
+                    {
+                        question: "What sound does 'th' make in the word 'this'?",
+                        options: ["t", "s", "th (put tongue between teeth)", "f"],
+                        correct: 2,
+                        explanation: "'th' makes a special sound - put your tongue between your teeth! 👅"
+                    },
+                    {
+                        question: "Which word starts with the same sound as 'sun'?",
+                        options: ["Moon", "Star", "Sock", "Cloud"],
+                        correct: 2,
+                        explanation: "Sun and sock both start with the 's' sound! 🧦"
+                    },
+                    {
+                        question: "Which word rhymes with 'cake'?",
+                        options: ["Bake", "Cook", "Eat", "Food"],
+                        correct: 0,
+                        explanation: "Cake and bake rhyme! They both end with 'ake'! 🎂"
+                    }
+                ]
+            }
+        };
+
+        // Topic definitions
+        const topics = {
+            math: [
+                { id: 'addition', name: '➕ Addition', emoji: '➕' },
+                { id: 'subtraction', name: '➖ Subtraction', emoji: '➖' },
+                { id: 'multiplication', name: '✖️ Multiplication', emoji: '✖️' },
+                { id: 'shapes', name: '🔷 Shapes', emoji: '🔷' },
+                { id: 'time', name: '⏰ Time', emoji: '⏰' },
+                { id: 'measurement', name: '📏 Measurement', emoji: '📏' }
+            ],
+            english: [
+                { id: 'reading', name: '📖 Reading', emoji: '📖' },
+                { id: 'vocabulary', name: '📝 Vocabulary', emoji: '📝' },
+                { id: 'grammar', name: '✏️ Grammar', emoji: '✏️' },
+                { id: 'spelling', name: '🔤 Spelling', emoji: '🔤' },
+                { id: 'phonics', name: '🔊 Phonics', emoji: '🔊' }
+            ]
+        };
+
+        // Navigation Functions
+        function selectSubject(subject) {
+            currentSubject = subject;
+            showScreen('topicScreen');
+
+            const topicTitle = document.getElementById('topicTitle');
+            topicTitle.textContent = subject === 'math' ? '🔢 Choose Your Math Topic' : '📚 Choose Your English Topic';
+
+            const topicGrid = document.getElementById('topicGrid');
+            topicGrid.innerHTML = '';
+
+            topics[subject].forEach(topic => {
+                const btn = document.createElement('button');
+                btn.className = 'topic-btn';
+                btn.innerHTML = `${topic.emoji} ${topic.name}`;
+                btn.onclick = () => selectTopic(topic.id);
+                topicGrid.appendChild(btn);
+            });
+        }
+
+        function selectTopic(topicId) {
+            currentTopic = topicId;
+            // Highlight selected topic
+            const buttons = document.querySelectorAll('.topic-btn');
+            buttons.forEach(btn => {
+                if (btn.textContent.toLowerCase().includes(topicId)) {
+                    btn.style.background = '#f5576c';
+                } else {
+                    btn.style.background = '#667eea';
+                }
+            });
+        }
+
+        function startQuiz() {
+            if (!currentTopic) {
+                alert('Please select a topic first! 😊');
+                return;
+            }
+
+            const numQuestions = parseInt(document.getElementById('numQuestions').value);
+            const allQuestions = questionBank[currentSubject][currentTopic];
+
+            // Shuffle and select questions
+            currentQuestions = shuffleArray([...allQuestions]).slice(0, Math.min(numQuestions, allQuestions.length));
+            currentQuestionIndex = 0;
+            userAnswers = [];
+            selectedAnswer = null;
+
+            showScreen('quizScreen');
+            displayQuestion();
+        }
+
+        function displayQuestion() {
+            const question = currentQuestions[currentQuestionIndex];
+            const progress = ((currentQuestionIndex + 1) / currentQuestions.length) * 100;
+
+            document.getElementById('progressFill').style.width = progress + '%';
+            document.getElementById('progressFill').textContent = `Question ${currentQuestionIndex + 1} of ${currentQuestions.length}`;
+
+            document.getElementById('questionText').textContent = question.question;
+
+            const optionsContainer = document.getElementById('optionsContainer');
+            optionsContainer.innerHTML = '';
+
+            question.options.forEach((option, index) => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+                btn.textContent = option;
+                btn.onclick = () => selectOption(index, btn);
+                optionsContainer.appendChild(btn);
+            });
+
+            document.getElementById('nextBtn').style.display = 'none';
+            selectedAnswer = null;
+        }
+
+        function selectOption(index, button) {
+            if (selectedAnswer !== null) return; // Already answered
+
+            selectedAnswer = index;
+            const question = currentQuestions[currentQuestionIndex];
+            const isCorrect = index === question.correct;
+
+            userAnswers.push({
+                question: question.question,
+                selected: index,
+                correct: question.correct,
+                isCorrect: isCorrect,
+                explanation: question.explanation,
+                options: question.options
+            });
+
+            // Show feedback
+            const buttons = document.querySelectorAll('.option-btn');
+            buttons.forEach((btn, i) => {
+                btn.style.pointerEvents = 'none';
+                if (i === question.correct) {
+                    btn.classList.add('correct');
+                } else if (i === index && !isCorrect) {
+                    btn.classList.add('incorrect');
+                }
+            });
+
+            document.getElementById('nextBtn').style.display = 'inline-block';
+        }
+
+        function nextQuestion() {
+            currentQuestionIndex++;
+
+            if (currentQuestionIndex < currentQuestions.length) {
+                displayQuestion();
+            } else {
+                showResults();
+            }
+        }
+
+        function showResults() {
+            showScreen('resultsScreen');
+
+            const correctCount = userAnswers.filter(a => a.isCorrect).length;
+            const totalQuestions = userAnswers.length;
+            const percentage = Math.round((correctCount / totalQuestions) * 100);
+
+            // Celebration based on score
+            let celebration = '';
+            if (percentage === 100) {
+                celebration = '🏆 🌟 ✨ 🎉 🎊';
+            } else if (percentage >= 80) {
+                celebration = '🌟 ✨ 🎉 👏';
+            } else if (percentage >= 60) {
+                celebration = '👍 😊 ⭐';
+            } else {
+                celebration = '💪 📚 🎯';
+            }
+
+            document.getElementById('celebration').textContent = celebration;
+            document.getElementById('scoreDisplay').innerHTML = `
+                You got <strong>${correctCount}</strong> out of <strong>${totalQuestions}</strong> correct!<br>
+                <span style="font-size: 0.6em;">${percentage}%</span>
+            `;
+
+            // Display detailed results
+            const resultsList = document.getElementById('resultsList');
+            resultsList.innerHTML = '';
+
+            userAnswers.forEach((answer, index) => {
+                const item = document.createElement('div');
+                item.className = `result-item ${answer.isCorrect ? 'correct' : 'incorrect'}`;
+
+                item.innerHTML = `
+                    <div class="result-question">
+                        <strong>Question ${index + 1}:</strong> ${answer.question}
+                    </div>
+                    <div class="result-answer">
+                        <strong>Your answer:</strong> ${answer.options[answer.selected]} ${answer.isCorrect ? '✅' : '❌'}
+                    </div>
+                    ${!answer.isCorrect ? `<div class="result-answer"><strong>Correct answer:</strong> ${answer.options[answer.correct]} ✓</div>` : ''}
+                    <div class="result-explanation">
+                        <strong>💡 Explanation:</strong> ${answer.explanation}
+                    </div>
+                `;
+
+                resultsList.appendChild(item);
+            });
+        }
+
+        function goToWelcome() {
+            showScreen('welcomeScreen');
+            currentSubject = '';
+            currentTopic = '';
+            currentQuestions = [];
+            currentQuestionIndex = 0;
+            userAnswers = [];
+        }
+
+        function showScreen(screenId) {
+            document.querySelectorAll('.screen').forEach(screen => {
+                screen.classList.remove('active');
+            });
+            document.getElementById(screenId).classList.add('active');
+        }
+
+        function shuffleArray(array) {
+            const newArray = [...array];
+            for (let i = newArray.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+            }
+            return newArray;
+        }
+    </script>
+</body>
+</html>
